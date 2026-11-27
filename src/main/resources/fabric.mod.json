@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "aimassist",
+  "version": "${version}",
+  "name": "Aim Assist",
+  "description": "Aim Assist mod for Minecraft Fabric 1.21.4 - Helps you aim at nearby entities",
+  "authors": ["AimAssistDev"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "main": ["com.aimassist.AimAssistMod"],
+    "client": ["com.aimassist.AimAssistClient"]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

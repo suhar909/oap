@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aim Assist Mod - Minecraft 1.21.4 Fabric</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid #e94560;
+        }
+        .hero h1 {
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+            margin-bottom: 10px;
+        }
+        .hero .subtitle {
+            font-size: 1.3em;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .section {
+            background: #141420;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+        .section h2 {
+            color: #e94560;
+            margin-bottom: 16px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h3 {
+            color: #7ec8e3;
+            margin: 16px 0 8px;
+        }
+        code {
+            background: #1e1e2e;
+            border: 1px solid #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            color: #a6e3a1;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1e1e2e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: #cdd6f4;
+            line-height: 1.6;
+        }
+        .step {
+            display: flex;
+            gap: 16px;
+            margin: 16px 0;
+            padding: 16px;
+            background: #1a1a2e;
+            border-radius: 8px;
+            border-left: 4px solid #e94560;
+        }
+        .step-num {
+            background: #e94560;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-content p { margin: 4px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        th {
+            background: #1a1a2e;
+            color: #e94560;
+        }
+        .key {
+            display: inline-block;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 2px 10px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 2px 0 #222;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .feature {
+            background: #1a1a2e;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #2a2a3a;
+        }
+        .feature-icon { font-size: 1.5em; margin-bottom: 8px; }
+        .warning {
+            background: #2a1a00;
+            border: 1px solid #e9a040;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .warning::before {
+            content: "⚠️ ";
+        }
+        .btn {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 8px;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #333;
+            border: 1px solid #555;
+        }
+        .file-tree {
+            font-family: monospace;
+            line-height: 1.8;
+            color: #a6adc8;
+        }
+        .file-tree .folder { color: #7ec8e3; }
+        .file-tree .file { color: #a6e3a1; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🎯 Aim Assist Mod</h1>
+        <p class="subtitle">Мод для Minecraft Java 1.21.4 (Fabric)</p>
+        <div>
+            <span class="badge">Minecraft 1.21.4</span>
+            <span class="badge">Fabric Loader</span>
+            <span class="badge">Fabric API</span>
+            <span class="badge">Java 21</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>📦 Файлы мода созданы!</h2>
+            <p>Все исходные файлы мода уже созданы в этом проекте. Ниже — инструкция по сборке .jar файла и загрузке на GitHub.</p>
+            
+            <div class="warning">
+                Для сборки нужен <strong>JDK 21</strong>. Скачайте с <a href="https://adoptium.net/" style="color:#e9a040">adoptium.net</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Сборка мода</h2>
+            
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <p><strong>Скачайте проект</strong> (или скопируйте файлы)</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <p><strong>Откройте терминал</strong> в папке проекта и выполните:</p>
+                    <pre><code># Если есть Gradle:
+gradle wrapper --gradle-version=8.12
+./gradlew build
+
+# Или используйте скрипт:
+chmod +x quick-build.sh
+./quick-build.sh</code></pre>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <p><strong>Готовый .jar файл:</strong></p>
+                    <pre><code>build/libs/aim-assist-1.0.0.jar</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📤 Загрузка на GitHub</h2>
+            
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <p><strong>Создайте репозиторий</strong> на <a href="https://github.com/new" style="color:#e94560">github.com/new</a></p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <p><strong>Загрузите код:</strong></p>
+                    <pre><code>git init
+git add .
+git commit -m "Aim Assist Mod for MC 1.21.4 Fabric"
+git branch -M main
+git remote add origin https://github.com/ВАШ_ЛОГИН/aim-assist-mod.git
+git push -u origin main</code></pre>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <p><strong>GitHub Actions</strong> автоматически соберёт .jar файл!<br>
+                    Скачайте из вкладки <code>Actions</code> → <code>Build Mod</code> → артефакт</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎮 Возможности</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <strong>Автонаведение</strong>
+                    <p>Находит ближайшую цель и плавно наводит прицел</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👁️</div>
+                    <strong>Проверка видимости</strong>
+                    <p>Не целится через стены и блоки</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <strong>Плавное наведение</strong>
+                    <p>Настраиваемая скорость для естественного вида</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎚️</div>
+                    <strong>Настройка FOV</strong>
+                    <p>Работает только с целями в поле зрения</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👥</div>
+                    <strong>Игроки + Мобы</strong>
+                    <p>Можно выбрать кого таргетить</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⌨️</div>
+                    <strong>Горячие клавиши</strong>
+                    <p>V — вкл/выкл, R — удерживать</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⌨️ Управление</h2>
+            <table>
+                <tr><th>Клавиша</th><th>Действие</th></tr>
+                <tr><td><span class="key">V</span></td><td>Включить / выключить Aim Assist</td></tr>
+                <tr><td><span class="key">R</span></td><td>Удерживать для прицеливания (работает всегда)</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Настройки</h2>
+            <p>Откройте <code>src/main/java/com/aimassist/AimAssistClient.java</code>:</p>
+            <table>
+                <tr><th>Параметр</th><th>По умолчанию</th><th>Описание</th></tr>
+                <tr><td><code>range</code></td><td>4.5</td><td>Дальность (блоки)</td></tr>
+                <tr><td><code>aimSpeed</code></td><td>8.0</td><td>Скорость наведения (1-20)</td></tr>
+                <tr><td><code>fov</code></td><td>90.0</td><td>Поле зрения (градусы)</td></tr>
+                <tr><td><code>targetPlayers</code></td><td>true</td><td>Целиться в игроков</td></tr>
+                <tr><td><code>targetMobs</code></td><td>true</td><td>Целиться в мобов</td></tr>
+                <tr><td><code>smoothAim</code></td><td>true</td><td>Плавное наведение</td></tr>
+                <tr><td><code>visibilityCheck</code></td><td>true</td><td>Проверка стен</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📁 Структура проекта</h2>
+            <div class="file-tree">
+<span class="folder">aim-assist-mod/</span>
+├── <span class="file">build.gradle</span>          <span style="color:#666">← Настройки сборки</span>
+├── <span class="file">gradle.properties</span>     <span style="color:#666">← Версии зависимостей</span>
+├── <span class="file">settings.gradle</span>       <span style="color:#666">← Имя проекта</span>
+├── <span class="file">gradlew</span> / <span class="file">gradlew.bat</span> <span style="color:#666">← Скрипты сборки</span>
+├── <span class="folder">src/main/</span>
+│   ├── <span class="folder">java/com/aimassist/</span>
+│   │   ├── <span class="file">AimAssistMod.java</span>     <span style="color:#666">← Серверный entrypoint</span>
+│   │   └── <span class="file">AimAssistClient.java</span>  <span style="color:#666">← Вся логика aim assist</span>
+│   └── <span class="folder">resources/</span>
+│       ├── <span class="file">fabric.mod.json</span>       <span style="color:#666">← Описание мода</span>
+│       └── <span class="folder">assets/aimassist/lang/</span>
+│           ├── <span class="file">en_us.json</span>        <span style="color:#666">← Английский</span>
+│           └── <span class="file">ru_ru.json</span>        <span style="color:#666">← Русский</span>
+└── <span class="folder">.github/workflows/</span>
+    └── <span class="file">build.yml</span>           <span style="color:#666">← Авто-сборка на GitHub</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📥 Установка в Minecraft</h2>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <p>Установите <a href="https://fabricmc.net/use/installer/" style="color:#e94560">Fabric Loader</a> для 1.21.4</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <p>Скачайте <a href="https://modrinth.com/mod/fabric-api" style="color:#e94560">Fabric API</a> для 1.21.4</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <p>Скопируйте <code>aim-assist-1.0.0.jar</code> в папку <code>.minecraft/mods/</code></p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <p>Запустите Minecraft с профилем Fabric!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❓ Решение проблем</h2>
+            <h3>Build failed: "Could not resolve..."</h3>
+            <p>Проверьте интернет. Gradle скачивает зависимости при первой сборке (~200MB).</p>
+            
+            <h3>"Unsupported class file major version"</h3>
+            <p>Нужна Java 21. Проверьте: <code>java -version</code></p>
+            
+            <h3>Мод не загружается</h3>
+            <p>Убедитесь что Fabric API установлен в папке mods/.</p>
+            
+            <h3>gradlew: Permission denied</h3>
+            <p>Выполните: <code>chmod +x gradlew</code></p>
+        </div>
+    </div>
+</body>
+</html>
